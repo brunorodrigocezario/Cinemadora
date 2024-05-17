@@ -1,7 +1,42 @@
+//AQUI
+//  ContentView.swift
+//  Cinemadora
+//
+//  Created by Bruno Cezario on 15/05/24.
+//
+
 import SwiftUI
 
+struct Movie: Identifiable {
+    let id = UUID()
+    let title: String
+    let description: String
+    let imageName: String
+    let absencePoints: Int
+    let hasPostCreditScene: Bool
+}
+
 struct ContentView: View {
-    @State var movie: String = ""
+    @State private var searchText = ""
+    
+    var movies: [Movie] = [
+        Movie(title: "Barbie", description: "Tempo de Duração:1h54m", imageName: "barbie", absencePoints: 4, hasPostCreditScene: false),
+        Movie(title: "Oppenheimer", description: "Tempo de Duração:3h", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false),
+        Movie(title: "Fale Comigo", description: "Tempo de Duração:1h35m", imageName: "falecomigo", absencePoints: 4, hasPostCreditScene: false),
+        Movie(title: "Guerra Civil", description: "Tempo de Duração: 1h54m", imageName: "guerracivil", absencePoints: 3, hasPostCreditScene: false),
+        Movie(title: "Abigail", description: "Tempo de Duração:1h49m", imageName: "abigail", absencePoints: 2, hasPostCreditScene: false),
+        Movie(title: "Madame Teia", description: "Tempo de Duração:1h56m", imageName: "madameteia", absencePoints: 2, hasPostCreditScene: true),
+        Movie(title: "BeeKeeper", description: "Tempo de Duração:1h45m", imageName: "beekeeper", absencePoints: 3, hasPostCreditScene: false),
+        Movie(title: "Meninas Malvadas", description: "Tempo de Duração:1h52m", imageName: "meninasmalvadas", absencePoints: 3, hasPostCreditScene: false)
+    ]
+    
+    var filteredMovies: [Movie] {
+        if searchText.isEmpty {
+            return movies
+        } else {
+            return movies.filter { $0.title.lowercased().contains(searchText.lowercased()) }
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -9,7 +44,7 @@ struct ContentView: View {
                 VStack(alignment: .leading, spacing: 20.0) {
                     TextField(
                         "Pesquise o nome do filme",
-                        text: $movie
+                        text: $searchText
                     )
                     .font(.body)
                     .padding()
@@ -20,176 +55,43 @@ struct ContentView: View {
                     )
                     .multilineTextAlignment(.center)
                     
-                    HStack {
-                        Image(ImageResource.barbie)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
+                    ForEach(filteredMovies) { movie in
+                        HStack {
+                            Image(movie.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxHeight: 150)
+                                .frame(maxWidth: 150)
+                                .alignmentGuide(.leading) { _ in
+                                    0
+                                }
+                            
+                            VStack(alignment: .leading){
+                                Text(movie.title)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.douradoC)
+                                Text(movie.description)
+                                Text("Pontos de Ausência: \(movie.absencePoints)")
+                                Text("Tem pós-créditos? \(movie.hasPostCreditScene ? "Sim" : "Não")")
+
+                                Button(action: {
+                                    // abrir o pop-up
+ 
+                                            }) {
+                                                Text("Calcular Ausências")
+                                                    .fontWeight(.bold)
+                                                    .padding()
+                                                    .background(Color.douradoC)
+                                                    .foregroundColor(.black)
+                                                    .cornerRadius(8)
+                                            }
+                                
                             }
-                        
-                        VStack(alignment: .leading){
-                            Text("Barbie")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h54m")
-                            Text("Pontos de Ausência: 4")
-                            Text("Tem pós-créditos? Não!")
-                        }
-                    }
-                    .alignmentGuide(.leading) { _ in
-                        0
-                    }
-                    
-                    HStack {
-                        Image(ImageResource.oppenheimer)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("Oppenheimer")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:3h")
-                            Text("Pontos de Ausência: 2")
-                            Text("Tem pós-créditos? Não!")
                             
                         }
-                    }
-                    HStack {
-                        Image(ImageResource.falecomigo)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("Fale Comigo")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h35m")
-                            Text("Pontos de Ausência: 4")
-                            Text("Tem pós-créditos? Não!")
-                            
-                        }
-                    }
-                    HStack {
-                        Image(ImageResource.guerracivil)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("Guerra Civil")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h54m")
-                            Text("Pontos de Ausência: 3")
-                            Text("Tem pós-créditos? Não!")
-                            
-                        }
-                    }
-                    HStack {
-                        Image(ImageResource.abigail)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("Abigail")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h49m")
-                            Text("Pontos de Ausência: 3")
-                            Text("Tem pós-créditos? Não!")
-                            
-                        }
-                    }
-                    HStack {
-                        Image(ImageResource.madameteia)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("Madame Teia")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h56m")
-                            Text("Pontos de Ausência: 2")
-                            Text("Tem pós-créditos? Sim!")
-                            
-                        }
-                    }
-                    HStack {
-                        Image(ImageResource.beekeeper)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("BeeKeeper")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h45m")
-                            Text("Pontos de Ausência: 3")
-                            Text("Tem pós-créditos? Não!")
-                            
-                        }
-                    }
-                    
-                    HStack {
-                        Image(ImageResource.meninasmalvadas)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 150)
-                            .frame(maxWidth: 150)
-                            .alignmentGuide(.leading) { _ in
-                                0
-                            }
-                        
-                    VStack(alignment: .leading){
-                            Text("Meninas Malvadas")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundColor(.douradoC)
-                            Text("Tempo de Duração:1h52m")
-                            Text("Pontos de Ausência: 3")
-                            Text("Tem pós-créditos? Não!")
-                            
+                        .alignmentGuide(.leading) { _ in
+                            0
                         }
                     }
                 }
@@ -204,13 +106,9 @@ struct ContentView: View {
             .foregroundColor(.white)
             .background(Color.pretoC)
         }
-        
-        //.padding()
     }
 }
-
 
 #Preview {
     ContentView()
 }
-
