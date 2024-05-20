@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DD322B792BF61E680055B92D /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD322B782BF61E680055B92D /* StyleGuide.swift */; };
+		DD6123372BF7AA27004941A7 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6123362BF7AA27004941A7 /* BottomSheetView.swift */; };
 		DDFF2B572BF4F8A500992A98 /* CinemadoraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF2B562BF4F8A500992A98 /* CinemadoraApp.swift */; };
 		DDFF2B592BF4F8A500992A98 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFF2B582BF4F8A500992A98 /* ContentView.swift */; };
 		DDFF2B5B2BF4F8A700992A98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDFF2B5A2BF4F8A700992A98 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		DD322B782BF61E680055B92D /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
+		DD6123362BF7AA27004941A7 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		DDFF2B532BF4F8A500992A98 /* Cinemadora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cinemadora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFF2B562BF4F8A500992A98 /* CinemadoraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CinemadoraApp.swift; sourceTree = "<group>"; };
 		DDFF2B582BF4F8A500992A98 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			children = (
 				DDFF2B562BF4F8A500992A98 /* CinemadoraApp.swift */,
 				DDFF2B582BF4F8A500992A98 /* ContentView.swift */,
+				DD6123362BF7AA27004941A7 /* BottomSheetView.swift */,
 				DD322B782BF61E680055B92D /* StyleGuide.swift */,
 				DDFF2B5A2BF4F8A700992A98 /* Assets.xcassets */,
 				DDFF2B5C2BF4F8A700992A98 /* Preview Content */,
@@ -141,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDFF2B592BF4F8A500992A98 /* ContentView.swift in Sources */,
+				DD6123372BF7AA27004941A7 /* BottomSheetView.swift in Sources */,
 				DDFF2B572BF4F8A500992A98 /* CinemadoraApp.swift in Sources */,
 				DD322B792BF61E680055B92D /* StyleGuide.swift in Sources */,
 			);
