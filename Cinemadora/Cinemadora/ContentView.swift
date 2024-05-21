@@ -1,9 +1,8 @@
-//  ContentView.swift
+//ContentView.swift
 //  Cinemadora
 //
 //  Created by Bruno Cezario on 15/05/24.
 //https://stackoverflow.com/questions/77575569/how-to-make-1d-bar-chart-fill-up-entire-width-in-swiftui
-
 
 import SwiftUI
 
@@ -15,12 +14,14 @@ struct Movie: Identifiable {
     let absencePoints: Int
     let hasPostCreditScene: Bool
     let absenceDescriptions: [String]
+    let absenceTimes: [String]
 }
 
 struct ContentView: View {
     @State private var searchText = ""
     @State private var selectedMovie: Movie? = nil
     @State private var showBottomSheet = false
+    @State private var userEntry = ""
     
     var movies: [Movie] = [
         Movie(title: "Barbie", description: "Tempo de Duração:1h54m", imageName: "barbie", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
@@ -28,40 +29,40 @@ struct ContentView: View {
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["00:30", "00:45", "01:15", "01:30"]),
         Movie(title: "Oppenheimer", description: "Tempo de Duração:3h", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["01:00", "02:30"]),
         Movie(title: "Fale Comigo", description: "Tempo de Duração:1h35m", imageName: "falecomigo", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["00:20", "00:40", "01:00", "01:20"]),
         Movie(title: "Guerra Civil", description: "Tempo de Duração: 1h54m", imageName: "guerracivil", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["00:45", "01:20", "01:45"]),
         Movie(title: "Abigail", description: "Tempo de Duração:1h49m", imageName: "abigail", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["00:35", "01:10"]),
         Movie(title: "Madame Teia", description: "Tempo de Duração:1h56m", imageName: "madameteia", absencePoints: 2, hasPostCreditScene: true, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["00:50", "01:30"]),
         Movie(title: "BeeKeeper", description: "Tempo de Duração:1h45m", imageName: "beekeeper", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ]),
+        ], absenceTimes: ["00:25", "00:50", "01:15"]),
         Movie(title: "Meninas Malvadas", description: "Tempo de Duração:1h52m", imageName: "meninasmalvadas", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ])
+        ], absenceTimes: ["00:30", "01:00", "01:30"])
     ]
     
     var filteredMovies: [Movie] {
@@ -82,6 +83,7 @@ struct ContentView: View {
                             text: $searchText
                         )
                         .font(.body)
+                        .foregroundStyle(Color.black)
                         .padding()
                         .background(Color.cinza1.opacity(1))
                         .cornerRadius(8)
@@ -131,9 +133,9 @@ struct ContentView: View {
                         VStack(spacing: 16) {
                             if let movie = selectedMovie {
                                 Text(movie.title)
-                                    .font(.headline)
+                                    .font(.header2)
                                     .padding()
-                                    .colorInvert()
+                                    .foregroundColor(.douradoC) // Cor do título do filme
                                 
                                 Image(movie.imageName)
                                     .resizable()
@@ -141,11 +143,21 @@ struct ContentView: View {
                                     .frame(height: 200)
                                     .cornerRadius(12)
                                 
-                                VStack(alignment: .leading, spacing: 20){                                ForEach(Array(movie.absenceDescriptions.enumerated()), id: \.offset) { index, description in
-                                    Text("Ponto de Ausência \(index + 1):\n \(description)")
-                                        .padding()
-                                        .colorInvert()
-                                }
+                                ForEach(Array(zip(movie.absenceDescriptions.indices, movie.absenceDescriptions)), id: \.0) { index, description in
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text("Ponto de Ausência \(index + 1):")
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.black)
+                                            Text(movie.absenceTimes[index])
+                                                .foregroundColor(.red)
+                                        }
+                                        Text(description)
+                                            .foregroundColor(.black)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                            .padding(.bottom, 8)
+                                    }
+                                    .padding(.horizontal)
                                 }
                                 
                                 Button(action: {
@@ -160,6 +172,21 @@ struct ContentView: View {
                                 }
                             }
                         }
+                        .padding()
+                        Text("Você achou algum outro ponto de ausênncia? Conta pra gente!")
+                            .foregroundColor(.black)
+                        TextField(
+                            "",
+                            text: $userEntry
+                        )
+                        .font(.body)
+                        .padding()
+                        .background(Color.cinza1.opacity(1))
+                        .foregroundStyle(Color.black)
+                        .cornerRadius(8)
+                        .overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray, lineWidth: 1)
+                        )
                         .padding()
                     }
                     .edgesIgnoringSafeArea(.all)
