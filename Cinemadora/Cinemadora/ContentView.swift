@@ -15,6 +15,14 @@ struct Movie: Identifiable {
     let hasPostCreditScene: Bool
     let absenceDescriptions: [String]
     let absenceTimes: [String]
+    
+    var durationInMinutes: Int {
+        let components = description.replacingOccurrences(of: "Tempo de Duração:", with: "").split(separator: "h")
+        let hours = Int(components[0]) ?? 0
+        let minutes = Int(components[1].replacingOccurrences(of: "m", with: "")) ?? 0
+        return hours * 60 + minutes
+    }
+
 }
 
 struct ContentView: View {
@@ -30,21 +38,21 @@ struct ContentView: View {
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
         ], absenceTimes: ["00:30", "00:45", "01:15", "01:30"]),
-        Movie(title: "Oppenheimer", description: "Tempo de Duração:3h", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
+        Movie(title: "Oppenheimer", description: "Tempo de Duração:3h00m", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ], absenceTimes: ["01:00", "02:30"]),
+        ], absenceTimes: ["00:25", "01:40"]),
         Movie(title: "Fale Comigo", description: "Tempo de Duração:1h35m", imageName: "falecomigo", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
         ], absenceTimes: ["00:20", "00:40", "01:00", "01:20"]),
-        Movie(title: "Guerra Civil", description: "Tempo de Duração: 1h54m", imageName: "guerracivil", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
+        Movie(title: "Guerra Civil", description: "Tempo de Duração:1h54m", imageName: "guerracivil", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
-        ], absenceTimes: ["00:45", "01:20", "01:45"]),
+        ], absenceTimes: ["00:25", "00:50", "01:15"]),
         Movie(title: "Abigail", description: "Tempo de Duração:1h49m", imageName: "abigail", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
             "Lorem ipsum dolor sit amet. Aut velit enim.",
             "Lorem ipsum dolor sit amet. Aut velit enim."
@@ -131,17 +139,42 @@ struct ContentView: View {
                 if showBottomSheet {
                     BottomSheetView(maxHeight: UIScreen.main.bounds.height, minHeight: 100, movie: selectedMovie) {
                         VStack(spacing: 16) {
+    
                             if let movie = selectedMovie {
-                                Text(movie.title)
-                                    .font(.header2)
-                                    .padding()
-                                    .foregroundColor(.douradoC) // Cor do título do filme
-                                
+                                HStack(){
+                                    Text(movie.title)
+                                        .font(.header2)
+                                        .padding()
+                                        .foregroundColor(.douradoC)
+                                        //.multilineTextAlignment(.center)
+//                                        .offset(x: 30)
+                                        .frame(alignment: .topLeading)
+                                    Spacer()
+                                    Button{
+                                        self.showBottomSheet.toggle()
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.body.bold())
+//                                            .padding([.top, .trailing], 9)
+                                            .foregroundStyle(.red)
+                                            .imageScale(.large)
+//                                            .mask(Circle())
+//                                            .frame( alignment: .topTrailing)
+                                            .offset(y: -16)
+                                            .padding()
+                                    }
+                                }
+//                                .background(.green)
+                                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                                 Image(movie.imageName)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(height: 200)
                                     .cornerRadius(12)
+                                
+                                BarChartView(duration: movie.durationInMinutes, absenceTimes: movie.absenceTimes)
+                                    .padding(.horizontal)
+                                    .padding(.bottom)
                                 
                                 ForEach(Array(zip(movie.absenceDescriptions.indices, movie.absenceDescriptions)), id: \.0) { index, description in
                                     VStack(alignment: .leading) {
@@ -150,7 +183,11 @@ struct ContentView: View {
                                                 .fontWeight(.bold)
                                                 .foregroundColor(.black)
                                             Text(movie.absenceTimes[index])
-                                                .foregroundColor(.red)
+                                                .fontWeight(.bold)
+                                                .font(.header5)
+                                                .background(.red)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
                                         }
                                         Text(description)
                                             .foregroundColor(.black)
@@ -160,7 +197,7 @@ struct ContentView: View {
                                     .padding(.horizontal)
                                 }
                                 
-                                Button(action: {
+                            /*    Button(action: {
                                     self.showBottomSheet.toggle()
                                 }) {
                                     Text("Fechar")
@@ -169,11 +206,13 @@ struct ContentView: View {
                                         .background(Color.red)
                                         .foregroundColor(.white)
                                         .cornerRadius(8)
-                                }
+                                } */
                             }
                         }
                         .padding()
-                        Text("Você achou algum outro ponto de ausênncia? Conta pra gente!")
+                        Text("Você achou algum outro ponto de ausênncia?")
+                            .foregroundColor(.black)
+                        Text("Conta pra gente!")
                             .foregroundColor(.black)
                         TextField(
                             "",
@@ -188,6 +227,21 @@ struct ContentView: View {
                             .stroke(Color.gray, lineWidth: 1)
                         )
                         .padding()
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                
+                            }) {
+                                Text("Enviar")
+                                    .fontWeight(.bold)
+                                    .padding()
+                                    .background(Color.red)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
+                                    .offset(y: -15)
+                                    .offset(x: -30)
+                            }
+                        }
                     }
                     .edgesIgnoringSafeArea(.all)
                 }
