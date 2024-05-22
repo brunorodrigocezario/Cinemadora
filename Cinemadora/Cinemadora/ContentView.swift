@@ -1,9 +1,3 @@
-//ContentView.swift
-//  Cinemadora
-//
-//  Created by Bruno Cezario on 15/05/24.
-//https://stackoverflow.com/questions/77575569/how-to-make-1d-bar-chart-fill-up-entire-width-in-swiftui
-
 import SwiftUI
 
 struct Movie: Identifiable {
@@ -22,7 +16,12 @@ struct Movie: Identifiable {
         let minutes = Int(components[1].replacingOccurrences(of: "m", with: "")) ?? 0
         return hours * 60 + minutes
     }
+}
 
+struct UserInput: Identifiable {
+    let id = UUID()
+    let movieID: UUID
+    let absenceDescription: String
 }
 
 struct ContentView: View {
@@ -30,6 +29,7 @@ struct ContentView: View {
     @State private var selectedMovie: Movie? = nil
     @State private var showBottomSheet = false
     @State private var userEntry = ""
+    @State private var userInputs: [UserInput] = []
     
     var movies: [Movie] = [
         Movie(title: "Barbie", description: "Tempo de Duração:1h54m", imageName: "barbie", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
@@ -139,7 +139,6 @@ struct ContentView: View {
                 if showBottomSheet {
                     BottomSheetView(maxHeight: UIScreen.main.bounds.height, minHeight: 100, movie: selectedMovie) {
                         VStack(spacing: 16) {
-    
                             if let movie = selectedMovie {
                                 HStack(){
                                     Text(movie.title)
@@ -196,64 +195,78 @@ struct ContentView: View {
                                     }
                                     .padding(.horizontal)
                                 }
+     
+
+                            
+                       
                                 
-                            /*    Button(action: {
-                                    self.showBottomSheet.toggle()
-                                }) {
-                                    Text("Fechar")
-                                        .fontWeight(.bold)
-                                        .padding()
-                                        .background(Color.red)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(8)
-                                } */
-                            }
-                        }
-                        .padding()
-                        Text("Você achou algum outro ponto de ausênncia?")
-                            .foregroundColor(.black)
-                        Text("Conta pra gente!")
-                            .foregroundColor(.black)
-                        TextField(
-                            "",
-                            text: $userEntry
-                        )
-                        .font(.body)
-                        .padding()
-                        .background(Color.cinza1.opacity(1))
-                        .foregroundStyle(Color.black)
-                        .cornerRadius(8)
-                        .overlay(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray, lineWidth: 1)
-                        )
-                        .padding()
-                        HStack{
-                            Spacer()
-                            Button(action: {
+                                /*    // Mostrar entradas do usuário
+                                    VStack(alignment: .leading) {
+                                        Text("Entradas do Usuário:")
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.black)
+                                        ForEach(userInputs.filter { $0.movieID == movie.id }) { input in
+                                            Text(input.absenceDescription)
+                                                .foregroundColor(.black)
+                                                .padding(.bottom, 2)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.top, 16) */
                                 
-                            }) {
-                                Text("Enviar")
-                                    .fontWeight(.bold)
+                                ScrollView {
+                                    Text("Você achou algum outro ponto de ausência?")
+                                        .foregroundColor(.black)
+                                    Text("Conta pra gente!")
+                                        .foregroundColor(.black)
+                                    TextField(
+                                        "",
+                                        text: $userEntry
+                                    )
+                                    .font(.body)
                                     .padding()
-                                    .background(Color.red)
-                                    .foregroundColor(.white)
+                                    .background(Color.gray.opacity(0.1))
+                                    .foregroundStyle(Color.black)
                                     .cornerRadius(8)
-                                    .offset(y: -15)
-                                    .offset(x: -30)
+                                    .overlay(RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray, lineWidth: 1)
+                                    )
+                                    .padding()
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {
+                                            if let movie = selectedMovie, !userEntry.isEmpty {
+                                                let newInput = UserInput(movieID: movie.id, absenceDescription: userEntry)
+                                                userInputs.append(newInput)
+                                                userEntry = ""
+                                            }
+                                        }) {
+                                            Text("Enviar")
+                                                .fontWeight(.bold)
+                                                .padding()
+                                                .background(Color.red)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(8)
+                                                .offset(y: -15)
+                                                .offset(x: -30)
+                                        }
+                                    }
+                                }
                             }
                         }
+                        .padding()
                     }
                     .edgesIgnoringSafeArea(.all)
                 }
             }
             .navigationTitle("CINEMADORA")
             .scrollDismissesKeyboard(.immediately)
-            .toolbarBackground(Color.pretoC, for: .navigationBar)
+            .toolbarBackground(Color.black, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .foregroundColor(.white)
-            .background(Color.pretoC)
-            .background(Color.pretoC.edgesIgnoringSafeArea(.all))
+            .background(Color.black)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
         }
     }
 }
