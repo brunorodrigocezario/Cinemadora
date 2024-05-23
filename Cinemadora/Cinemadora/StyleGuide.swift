@@ -39,9 +39,15 @@ extension Font {
         design: .rounded
     )
     static let header6: Font = .system(
-        size:20,
+        size:22,
         weight: .bold,
         design: .rounded
     ) //ctrl + m para formatar!
+    
+    static let header7: Font = .system(
+        size:20,
+        weight: .bold,
+        design: .rounded
+    )
     static let body1: Font = .body.bold()
 }

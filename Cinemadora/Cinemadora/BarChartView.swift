@@ -20,17 +20,25 @@ struct BarChartView: View {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: totalHeight)
-                  //  .padding(.bottom, 16)
                 
-                ForEach(absenceMarkers, id: \.self) { marker in
-                    Rectangle()
-                        .fill(Color.red)
-                        .frame(width: 12, height: totalHeight)
-                        .offset(x: CGFloat(marker) / CGFloat(durationInSeconds) * totalWidth)
-                   //     .padding(.bottom, 16)
+                ForEach(Array(absenceMarkers.enumerated()), id: \.0) { index, marker in
+                    VStack {
+                        Rectangle()
+                            .fill(Color.red)
+                            .frame(width: 12, height: totalHeight)
+                            .offset(x: CGFloat(marker) / CGFloat(durationInSeconds) * totalWidth)
+                            .offset(y: 8)
+                        
+                        Text("PA\(index + 1)")
+                            .font(.caption)
+                            .foregroundColor(.black)
+                            .offset(x: CGFloat(marker) / CGFloat(durationInSeconds) * totalWidth - 6)
+                            .offset(y: 8)
+                            
+                    }
                 }
             }
         }
-        .frame(height: 20)
+        .frame(height: 60)
     }
 }

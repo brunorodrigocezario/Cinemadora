@@ -1,3 +1,8 @@
+//ContentView.swift
+//  Cinemadora
+//
+//  Created by Bruno Cezario on 15/05/24.
+
 import SwiftUI
 
 struct Movie: Identifiable {
@@ -28,48 +33,48 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var selectedMovie: Movie? = nil
     @State private var showBottomSheet = false
-    @State private var userEntry = ""
+    @State private var userEntry = UserDefaults.standard.string(forKey: "UserEntry") ?? ""
     @State private var userInputs: [UserInput] = []
     
     var movies: [Movie] = [
         Movie(title: "Barbie", description: "Tempo de Duração:1h54m", imageName: "barbie", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "3min! Uma cena de comédia leve que pode ser pulada sem perder a trama.",
+            "4.35min! Um número musical que não adiciona muito à história principal.",
+            "3min! Uma cena de flashback que reitera informações já conhecidas.",
+            "2.30min! Uma pausa para mostrar a paisagem, sem diálogo importante."
         ], absenceTimes: ["00:30", "00:45", "01:15", "01:30"]),
-        Movie(title: "Oppenheimer", description: "Tempo de Duração:3h00m", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+        Movie(title: "Oppenheimer", description: "Tempo de Duração:3h0m", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
+            "Uma discussão técnica sobre física que pode ser difícil de seguir para leigos.",
+            "Uma cena de contemplação solitária do protagonista."
         ], absenceTimes: ["00:25", "01:40"]),
         Movie(title: "Fale Comigo", description: "Tempo de Duração:1h35m", imageName: "falecomigo", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "Uma cena de construção de tensão com poucos diálogos.",
+            "Um momento de exploração em um ambiente escuro e misterioso.",
+            "Uma conversa paralela entre personagens secundários.",
+            "Uma montagem de cenas para estabelecer o clima de suspense."
         ], absenceTimes: ["00:20", "00:40", "01:00", "01:20"]),
         Movie(title: "Guerra Civil", description: "Tempo de Duração:1h54m", imageName: "guerracivil", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "Uma cena de treinamento de personagens secundários.",
+            "Um momento de planejamento estratégico com pouca ação.",
+            "Uma cena de flashback explicando a origem de um personagem secundário."
         ], absenceTimes: ["00:25", "00:50", "01:15"]),
         Movie(title: "Abigail", description: "Tempo de Duração:1h49m", imageName: "abigail", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "Uma cena de construção de mundo com muitos detalhes visuais, mas pouco diálogo.",
+            "Uma conversa lenta entre dois personagens sobre eventos passados."
         ], absenceTimes: ["00:35", "01:10"]),
         Movie(title: "Madame Teia", description: "Tempo de Duração:1h56m", imageName: "madameteia", absencePoints: 2, hasPostCreditScene: true, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "Uma cena de explicação científica sobre as habilidades da protagonista.",
+            "Um momento introspectivo onde a protagonista reflete sobre suas responsabilidades."
         ], absenceTimes: ["00:50", "01:30"]),
         Movie(title: "BeeKeeper", description: "Tempo de Duração:1h45m", imageName: "beekeeper", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "Uma cena de apicultura detalhada, mostrando o processo, mas sem relevância para a trama.",
+            "Uma conversa entre vizinhos sobre eventos locais sem impacto direto na história.",
+            "Uma pausa para mostrar a natureza ao redor da colmeia."
         ], absenceTimes: ["00:25", "00:50", "01:15"]),
         Movie(title: "Meninas Malvadas", description: "Tempo de Duração:1h52m", imageName: "meninasmalvadas", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim.",
-            "Lorem ipsum dolor sit amet. Aut velit enim."
+            "Uma cena de fofoca entre os estudantes que não adiciona muito à trama principal.",
+            "Um número musical durante uma festa escolar.",
+            "Um momento de reflexão da protagonista sobre sua popularidade na escola."
         ], absenceTimes: ["00:30", "01:00", "01:30"])
     ]
     
@@ -175,12 +180,16 @@ struct ContentView: View {
                                     .padding(.horizontal)
                                     .padding(.bottom)
                                 
+                                Divider()
+                                ScrollView{
                                 ForEach(Array(zip(movie.absenceDescriptions.indices, movie.absenceDescriptions)), id: \.0) { index, description in
                                     VStack(alignment: .leading) {
                                         HStack {
                                             Text("Ponto de Ausência \(index + 1):")
+                                            
                                                 .fontWeight(.bold)
-                                                .foregroundColor(.black)
+                                                .font(.header5)
+                                                .foregroundColor(.douradoC)
                                             Text(movie.absenceTimes[index])
                                                 .fontWeight(.bold)
                                                 .font(.header5)
@@ -189,43 +198,67 @@ struct ContentView: View {
                                                 .cornerRadius(10)
                                         }
                                         Text(description)
+                                            .multilineTextAlignment(.leading)
                                             .foregroundColor(.black)
+                                            //.font(.header7)
+                                            
                                             .fixedSize(horizontal: false, vertical: true)
                                             .padding(.bottom, 8)
-                                    }
-                                    .padding(.horizontal)
+                                            
+                                    }.padding(.horizontal, 18)
+                                    
                                 }
-     
-
-                            
-                       
-                                
-                                /*    // Mostrar entradas do usuário
+                                    Divider()
+                                    Spacer()
+                                    
                                     VStack(alignment: .leading) {
-                                        Text("Entradas do Usuário:")
-                                            .fontWeight(.bold)
-                                            .foregroundColor(.black)
-                                        ForEach(userInputs.filter { $0.movieID == movie.id }) { input in
-                                            Text(input.absenceDescription)
-                                                .foregroundColor(.black)
-                                                .padding(.bottom, 2)
+                                        HStack{
+                                            Text("Pontos de Ausência:")
+                                                .fontWeight(.bold)
+                                                .font(.header5)
+                                                .foregroundColor(.douradoC)
+                                            Text("Usuário")
+                                                .fontWeight(.bold)
+                                                .font(.header5)
+                                                .background(.red)
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                                .fixedSize(horizontal: false, vertical: true)
+                                        }
+                                        
+                                        ForEach(Array(userInputs.filter { $0.movieID == movie.id }.enumerated()), id: \.element.id) { index, input in
+                                            HStack {
+                                                Text("Ponto de Ausência \(index + 1):")
+                                                    .fontWeight(.bold)
+                                                    .font(.header5)
+                                                    .foregroundColor(.red)
+                                                Text(input.absenceDescription)
+                                                    .multilineTextAlignment(.leading)
+                                                    .foregroundColor(.black)
+                                                    //.font(.header7)
+                                                   // .fixedSize(horizontal: false, vertical: true)
+                                                    .padding(.bottom, 8)
+                                            }
+                                            .padding(.bottom, 2)
                                         }
                                     }
                                     .padding(.horizontal)
-                                    .padding(.top, 16) */
-                                
-                                ScrollView {
+                                    .padding(.top, 16)
+                                    
+                                    Divider()
+                                    Spacer()
                                     Text("Você achou algum outro ponto de ausência?")
                                         .foregroundColor(.black)
                                     Text("Conta pra gente!")
                                         .foregroundColor(.black)
-                                    TextField(
-                                        "",
+                                    TextEditor(
                                         text: $userEntry
                                     )
                                     .font(.body)
+                                    .frame(height: 80)
+                                    .background(Color.cinza1.opacity(1))
                                     .padding()
-                                    .background(Color.gray.opacity(0.1))
+                                    //.background(Color.gray.opacity(0.1))
                                     .foregroundStyle(Color.black)
                                     .cornerRadius(8)
                                     .overlay(RoundedRectangle(cornerRadius: 8)
@@ -261,15 +294,17 @@ struct ContentView: View {
             }
             .navigationTitle("CINEMADORA")
             .scrollDismissesKeyboard(.immediately)
-            .toolbarBackground(Color.black, for: .navigationBar)
+            .toolbarBackground(Color.pretoC, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .foregroundColor(.white)
-            .background(Color.black)
-            .background(Color.black.edgesIgnoringSafeArea(.all))
+            .background(Color.pretoC)
+            .background(Color.pretoC.edgesIgnoringSafeArea(.all))
         }
-    }
-}
+        //para recuperar feedbacks enviados pelo usuário
+
+            }
+        }
 
 #Preview {
     ContentView()
