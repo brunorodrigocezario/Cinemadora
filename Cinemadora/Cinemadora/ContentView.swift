@@ -40,41 +40,41 @@ struct ContentView: View {
         Movie(title: "Barbie", description: "Tempo de Duração:1h54m", imageName: "barbie", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
             "3min! Uma cena de comédia leve que pode ser pulada sem perder a trama.",
             "4.35min! Um número musical que não adiciona muito à história principal.",
-            "3min! Uma cena de flashback que reitera informações já conhecidas.",
+            "2min! Uma cena de flashback que reitera informações já conhecidas.",
             "2.30min! Uma pausa para mostrar a paisagem, sem diálogo importante."
-        ], absenceTimes: ["00:30", "00:45", "01:15", "01:30"]),
+        ], absenceTimes: ["00:30", "00:55", "01:10", "01:30"]),
         Movie(title: "Oppenheimer", description: "Tempo de Duração:3h0m", imageName: "oppenheimer", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
-            "Uma discussão técnica sobre física que pode ser difícil de seguir para leigos.",
-            "Uma cena de contemplação solitária do protagonista."
+            "2.32min! Uma discussão técnica sobre física que pode ser difícil de seguir para leigos.",
+            "3.43min! Uma cena de contemplação solitária do protagonista."
         ], absenceTimes: ["00:25", "01:40"]),
         Movie(title: "Fale Comigo", description: "Tempo de Duração:1h35m", imageName: "falecomigo", absencePoints: 4, hasPostCreditScene: false, absenceDescriptions: [
-            "Uma cena de construção de tensão com poucos diálogos.",
-            "Um momento de exploração em um ambiente escuro e misterioso.",
-            "Uma conversa paralela entre personagens secundários.",
-            "Uma montagem de cenas para estabelecer o clima de suspense."
-        ], absenceTimes: ["00:20", "00:40", "01:00", "01:20"]),
+            "1.54min! Uma cena de construção de tensão com poucos diálogos.",
+            "2.04min! Um momento de exploração em um ambiente escuro e misterioso.",
+            "3.07min! Uma conversa paralela entre personagens secundários.",
+            "2.33min! Uma montagem de cenas para estabelecer o clima de suspense."
+        ], absenceTimes: ["00:20", "00:48", "01:25", "01:20"]),
         Movie(title: "Guerra Civil", description: "Tempo de Duração:1h54m", imageName: "guerracivil", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
-            "Uma cena de treinamento de personagens secundários.",
-            "Um momento de planejamento estratégico com pouca ação.",
-            "Uma cena de flashback explicando a origem de um personagem secundário."
-        ], absenceTimes: ["00:25", "00:50", "01:15"]),
+            "3.03min! Uma cena de treinamento de personagens secundários.",
+            "2.22min! Um momento de planejamento estratégico com pouca ação.",
+            "3min! Uma cena de flashback explicando a origem de um personagem secundário."
+        ], absenceTimes: ["00:25", "00:53", "01:47"]),
         Movie(title: "Abigail", description: "Tempo de Duração:1h49m", imageName: "abigail", absencePoints: 2, hasPostCreditScene: false, absenceDescriptions: [
-            "Uma cena de construção de mundo com muitos detalhes visuais, mas pouco diálogo.",
-            "Uma conversa lenta entre dois personagens sobre eventos passados."
-        ], absenceTimes: ["00:35", "01:10"]),
+            "4min! Uma cena de construção de mundo com muitos detalhes visuais, mas pouco diálogo.",
+            "3.32min! Uma conversa lenta entre dois personagens sobre eventos passados."
+        ], absenceTimes: ["00:35", "01:13"]),
         Movie(title: "Madame Teia", description: "Tempo de Duração:1h56m", imageName: "madameteia", absencePoints: 2, hasPostCreditScene: true, absenceDescriptions: [
-            "Uma cena de explicação científica sobre as habilidades da protagonista.",
-            "Um momento introspectivo onde a protagonista reflete sobre suas responsabilidades."
-        ], absenceTimes: ["00:50", "01:30"]),
+            "3.31min! Uma cena de explicação científica sobre as habilidades da protagonista.",
+            "3.02min! Um momento introspectivo onde a protagonista reflete sobre suas responsabilidades."
+        ], absenceTimes: ["00:42", "01:38"]),
         Movie(title: "BeeKeeper", description: "Tempo de Duração:1h45m", imageName: "beekeeper", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
-            "Uma cena de apicultura detalhada, mostrando o processo, mas sem relevância para a trama.",
-            "Uma conversa entre vizinhos sobre eventos locais sem impacto direto na história.",
-            "Uma pausa para mostrar a natureza ao redor da colmeia."
-        ], absenceTimes: ["00:25", "00:50", "01:15"]),
+            "3.45min! Uma cena de apicultura detalhada, mostrando o processo, mas sem relevância para a trama.",
+            "4min! Uma conversa entre vizinhos sobre eventos locais sem impacto direto na história.",
+            "2.33min! Uma pausa para mostrar a natureza ao redor da colmeia."
+        ], absenceTimes: ["00:20", "00:55", "01:20"]),
         Movie(title: "Meninas Malvadas", description: "Tempo de Duração:1h52m", imageName: "meninasmalvadas", absencePoints: 3, hasPostCreditScene: false, absenceDescriptions: [
-            "Uma cena de fofoca entre os estudantes que não adiciona muito à trama principal.",
-            "Um número musical durante uma festa escolar.",
-            "Um momento de reflexão da protagonista sobre sua popularidade na escola."
+            "1.54min! Uma cena de fofoca entre os estudantes que não adiciona muito à trama principal.",
+            "3.38min! Um número musical durante uma festa escolar.",
+            "3.25min! Um momento de reflexão da protagonista sobre sua popularidade na escola."
         ], absenceTimes: ["00:30", "01:00", "01:30"])
     ]
     
@@ -186,7 +186,6 @@ struct ContentView: View {
                                     VStack(alignment: .leading) {
                                         HStack {
                                             Text("Ponto de Ausência \(index + 1):")
-                                            
                                                 .fontWeight(.bold)
                                                 .font(.header5)
                                                 .foregroundColor(.douradoC)
@@ -227,7 +226,7 @@ struct ContentView: View {
                                         }
                                         
                                         ForEach(Array(userInputs.filter { $0.movieID == movie.id }.enumerated()), id: \.element.id) { index, input in
-                                            HStack {
+                                            VStack(alignment: .leading){
                                                 Text("Ponto de Ausência \(index + 1):")
                                                     .fontWeight(.bold)
                                                     .font(.header5)
